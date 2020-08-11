@@ -1,0 +1,10 @@
+<h1> Ingredient Detail </h1>
+
+<h3><%= "Name: #{@ingredient.name}" %> </h3>
+<h3>Found in the Following Recipes:</h3>
+<ul>
+    <% @ingredient.recipes.each do |recipe| %>
+        <li><%= link_to recipe.name, recipe_path(recipe) %></li>
+        <% end %>
+</ul>
+
