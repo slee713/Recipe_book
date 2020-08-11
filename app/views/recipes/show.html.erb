@@ -7,13 +7,13 @@
 <h3> Ingredients: </h3>
 
 <ul> <% @recipe.ingredients.each do |i| %>
-        <li><%= i.name %></li>
+        <li><%= link_to i.name, ingredient_path(i) %></li>
     <% end %>
 </ul>
 
 <%= link_to "Edit Recipe", edit_recipe_path(@recipe) %> <br>
 <%= link_to "Delete this Recipe", recipe_path(@recipe), method: :delete %> <br>
-<%= link_to "Back", recipes_path %>
+<%= link_to "All Recipes", recipes_path %>
 
 
 

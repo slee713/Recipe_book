@@ -21,9 +21,24 @@ class IngredientsController < ApplicationController
             render :new
         end
     end
-    
 
+    def edit
+    end
 
+    def update
+        @ingredient.assign_attributes(ingred_params)
+        if @ingredient.valid?
+            @ingredient.save
+            redirect_to ingredient_path(@ingredient)
+        else
+            render :edit
+        end
+    end
+
+    def destroy
+        @ingredient.destroy
+        redirect_to ingredients_path
+    end
 
 
     private
