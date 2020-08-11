@@ -6,20 +6,55 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 require 'faker'
-
+require 'rest-client'
 Recipe.destroy_all
 Ingredient.destroy_all
 RecipeIngredient.destroy_all
 
-10.times do 
-    Recipe.create(name: Faker::Food.dish, duration_in_min: rand(1..100), difficulty: ["easy", "medium", "hard"].sample, vegetarian:[true, false].sample)
-end 
 
+response = RestClient.get("http://www.recipepuppy.com/api/?i=onions,garlic&q=omelet&p=3")
+data = JSON.load(response)
 
-30.times do 
-    Ingredient.create(name: Faker::Food.ingredient)
+data["results"].each do |recipe|
+    a = Recipe.create(name: recipe["title"], duration_in_min: rand(1..100), difficulty: ["easy", "medium", "hard"].sample, vegetarian:[true, false].sample)
+        recipe["ingredients"].split(", ").each do |ing_name|
+            if Ingredient.find_by(name: ing_name)
+                a.ingredients << Ingredient.find_by(name: ing_name)
+            else
+                a.ingredients << Ingredient.create(name: ing_name)
+            end
+        end
 end
 
-50.times do 
-    RecipeIngredient.create(recipe: Recipe.all.sample, ingredient: Ingredient.all.sample)
-end
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# 10.times do 
+#     Recipe.create(name: Faker::Food.dish, duration_in_min: rand(1..100), difficulty: ["easy", "medium", "hard"].sample, vegetarian:[true, false].sample)
+# end 
+
+
+# 30.times do 
+#     Ingredient.create(name: Faker::Food.ingredient)
+# end
+
+# 50.times do 
+#     RecipeIngredient.create(recipe: Recipe.all.sample, ingredient: Ingredient.all.sample)
+# end
